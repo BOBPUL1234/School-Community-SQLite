@@ -5,21 +5,11 @@ const cors = require('cors');
 const session = require('express-session');
 
 const app = express();
+const PORT = 3000;
 
 // ✅ CORS 설정
-const allowedOrigins = [
-  "http://localhost:3000",
-  "https://school-community-sqlite.onrender.com"
-];
-
 app.use(cors({
-  origin: function (origin, callback) {
-    if (!origin || allowedOrigins.includes(origin)) {
-      callback(null, true);
-    } else {
-      callback(new Error("Not allowed by CORS"));
-    }
-  },
+  origin: true,
   credentials: true
 }));
 
@@ -63,8 +53,6 @@ app.use("/board", boardRoutes);
 app.use("/comments", commentsRoutes);
 app.use("/likes", likesRouter); 
 
-const PORT = process.env.PORT || 3000;
-
 app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
+  console.log(`http://localhost:${PORT}`);
 });

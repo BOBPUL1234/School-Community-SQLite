@@ -161,7 +161,7 @@ filtered.forEach(room => {
     const userProfile = JSON.parse(localStorage.getItem("userProfile") || '{}');
     const userName = userProfile.userName || "이름 없음";
 
-    fetch("http://school-community-sqlite.onrender.com/chat/participants/join", {
+    fetch("/chat/participants/join", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -175,7 +175,7 @@ filtered.forEach(room => {
     saveRooms();
     alert("가입되었습니다.");
 
-    fetch(`http://school-community-sqlite.onrender.com/chat/participants/rooms?userId=${userId}`)
+    fetch(`/chat/participants/rooms?userId=${userId}`)
       .then(res => res.json())
       .then(data => {
         if (data.success) {
@@ -211,7 +211,7 @@ document.getElementById("createBtn").addEventListener("click", () => {
   };
 
   // ✅ DB에 저장이 완료된 뒤 joinedRooms에 추가
-  fetch("http://school-community-sqlite.onrender.com/chat/rooms/create", {
+  fetch("/chat/rooms/create", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(newRoom)

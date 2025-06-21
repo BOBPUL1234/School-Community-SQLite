@@ -79,7 +79,7 @@ function renderMessages() {
   const userProfile = JSON.parse(localStorage.getItem("userProfile") || '{}');
   const userName = userProfile.userName || "이름 없음";
 
-  fetch(`http://school-community-sqlite.onrender.com/chat/messages?roomId=${roomId}`)
+  fetch(`/chat/messages?roomId=${roomId}`)
     .then(res => res.json())
     .then(data => {
       if (!data.success) return;
@@ -127,7 +127,7 @@ sendBtn.addEventListener("click", () => {
   const userProfile = JSON.parse(localStorage.getItem("userProfile") || '{}');
   const userName = userProfile.userName || "이름 없음";
 
-  fetch("http://school-community-sqlite.onrender.com/chat/messages/send", {
+  fetch("/chat/messages/send", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
