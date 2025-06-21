@@ -5,7 +5,6 @@ const cors = require('cors');
 const session = require('express-session');
 
 const app = express();
-const PORT = 3000;
 
 // ✅ CORS 설정
 app.use(cors({
@@ -53,6 +52,8 @@ app.use("/board", boardRoutes);
 app.use("/comments", commentsRoutes);
 app.use("/likes", likesRouter); 
 
+const PORT = process.env.PORT || 3000;
+
 app.listen(PORT, () => {
-  console.log(`http://localhost:${PORT}`);
+  console.log(`Server is running on port ${PORT}`);
 });
