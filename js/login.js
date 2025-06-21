@@ -42,7 +42,7 @@ function registerStudent() {
         return;
     }
 
-    fetch("http://localhost:3000/auth/signup/student", {
+    fetch("http://school-community-sqlite.onrender.com/auth/signup/student", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ id, name, password })
@@ -68,7 +68,7 @@ function registerTeacher() {
         return;
     }
 
-    fetch("http://localhost:3000/auth/signup/teacher", {
+    fetch("http://school-community-sqlite.onrender.com/auth/signup/teacher", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ name, password, securityKey })
@@ -94,7 +94,7 @@ function loginStudent() {
         return;
     }
 
-    fetch("http://localhost:3000/auth/login/student", {
+    fetch("http://school-community-sqlite.onrender.com/auth/login/student", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         credentials: "include",
@@ -129,7 +129,7 @@ function loginTeacher() {
         return;
     }
 
-    fetch("http://localhost:3000/auth/login/teacher", {
+    fetch("http://school-community-sqlite.onrender.com/auth/login/teacher", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         credentials: "include",

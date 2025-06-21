@@ -285,7 +285,7 @@ function nestComments(flatComments) {
 
 async function loadCommentsForPost(postId) {
     try {
-        const response = await fetch(`http://localhost:3000/comments/${postId}`);
+        const response = await fetch(`http://school-community-sqlite.onrender.com/comments/${postId}`);
         const data = await response.json();
         return data;
     } catch (error) {
@@ -460,7 +460,7 @@ function renderReplies(replies, container) {
 
 async function loadPostsFromServer() {
     try {
-        const response = await fetch('http://localhost:3000/board/posts');
+        const response = await fetch('http://school-community-sqlite.onrender.com/board/posts');
 
         if (!response.ok) {
             throw new Error(`❌ 서버 응답 오류: ${response.status}`);
@@ -501,7 +501,7 @@ async function addPost() {
     }
 
     try {
-        const response = await fetch('http://localhost:3000/board/post', {
+        const response = await fetch('http://school-community-sqlite.onrender.com/board/post', {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ title, content })  // 🔥 created_at 포함
@@ -534,7 +534,7 @@ function toggleComments(btn) {
 
 document.addEventListener("DOMContentLoaded", async function () {
     try {
-        const response = await fetch('http://localhost:3000/board/posts');
+        const response = await fetch('http://school-community-sqlite.onrender.com/board/posts');
         posts = await response.json();
         console.log("✅ 서버에서 불러온 게시글:", posts);
         if (posts.length === 0) {
@@ -566,7 +566,7 @@ async function submitComment(event, input) {
         const postId = posts[currentPostIndex].id;
 
         try {
-            const response = await fetch('http://localhost:3000/comments', {
+            const response = await fetch('http://school-community-sqlite.onrender.com/comments', {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({
@@ -608,7 +608,7 @@ async function submitReply(event, input) {
         const parentId = parseInt(commentDiv.dataset.id);  // 댓글의 고유 ID로 연결
 
         try {
-            const response = await fetch("http://localhost:3000/comments", {
+            const response = await fetch("http://school-community-sqlite.onrender.com/comments", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({
@@ -649,7 +649,7 @@ async function submitCommentByButton(button) {
 
     try {
         // ✅ 서버로 댓글 저장 요청
-        const response = await fetch('http://localhost:3000/comments', {
+        const response = await fetch('http://school-community-sqlite.onrender.com/comments', {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
@@ -756,7 +756,7 @@ async function toggleLike(btn) {
     const targetId = parent.dataset.id;
 
     try {
-        await fetch("http://localhost:3000/likes", {
+        await fetch("http://school-community-sqlite.onrender.com/likes", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ targetType, targetId, liked: isLiked }),
@@ -771,7 +771,7 @@ async function deletePost(postId) {
     if (!confirm("이 게시글을 삭제하시겠습니까?")) return;
 
     try {
-        const res = await fetch(`http://localhost:3000/board/post/${postId}`, {
+        const res = await fetch(`http://school-community-sqlite.onrender.com/board/post/${postId}`, {
             method: "DELETE",
             credentials: "include"
         });
@@ -801,7 +801,7 @@ async function deleteComment(commentId) {
     if (!confirm("이 댓글을 삭제하시겠습니까?")) return;
 
     try {
-        const res = await fetch(`http://localhost:3000/comments/${commentId}`, {
+        const res = await fetch(`http://school-community-sqlite.onrender.com/comments/${commentId}`, {
             method: "DELETE",
             credentials: "include"
         });
@@ -825,7 +825,7 @@ async function toggleLikeImage(img) {
     const targetId = img.dataset.id;
 
     try {
-        const res = await fetch("http://localhost:3000/likes", {
+        const res = await fetch("http://school-community-sqlite.onrender.com/likes", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
