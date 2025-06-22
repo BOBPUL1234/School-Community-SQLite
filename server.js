@@ -5,54 +5,43 @@ const cors = require('cors');
 const session = require('express-session');
 
 const app = express();
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
 
-// ✅ CORS 설정
 app.use(cors({
-  origin: true,
+  origin: ["http://localhost:3000", "https://school-community-sqlite.onrender.com"],
   credentials: true
 }));
 
-// ✅ 세션 설정
 app.use(session({
-  secret: "bc79c1d3b7e23c4aa1bd9f28e12cbccd2a3c488ab6f91f14958fd2c81b8b263a",
+  secret: "your-secret-key",
   resave: false,
   saveUninitialized: true,
   cookie: { secure: false, httpOnly: true }
 }));
 
-// ✅ 기본 미들웨어
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
-app.use(express.static(path.join(__dirname)));
+app.use(express.static(path.join(__dirname, "public")));  // public 폴더 기준
 
-// ✅ 페이지 라우팅
-app.get("/", (req, res) => res.sendFile(path.join(__dirname, "login.html")));
-app.get("/main", (req, res) => res.sendFile(path.join(__dirname, "main.html")));
-app.get("/timetable", (req, res) => res.sendFile(path.join(__dirname, "timetable.html")));
-app.get("/chat", (req, res) => res.sendFile(path.join(__dirname, "chat.html")));
-app.get("/chatroom", (req, res) => res.sendFile(path.join(__dirname, "chatroom.html")));
-app.get("/anonymous", (req, res) => res.sendFile(path.join(__dirname, "anonymous.html")));
-app.get("/profile", (req, res) => res.sendFile(path.join(__dirname, "profile.html")));
+// ✅ HTML 라우팅
+const htmlPages = ["login", "main", "timetable", "chat", "chatroom", "anonymous", "profile"];
+htmlPages.forEach(page => {
+  app.get(`/${page === "login" ? "" : page}`, (req, res) => {
+    res.sendFile(path.join(__dirname, "public", `${page}.html`));
+  });
+});
 
-// ✅ 라우터 연결 (비동기 처리)
-const authRoutes = require('./routes/auth');
-const timetableRouter = require('./routes/time');
-const boardRoutes = require('./routes/board');
-const commentsRoutes = require('./routes/comments');
-const likesRouter = require("./routes/likes");
-const homeRouter = require("./routes/home");
+// ✅ 라우터 연결
+app.use("/auth", require("./routes/auth"));
+app.use("/time", require("./routes/time"));
+app.use("/chat", require("./routes/chat_messages"));
+app.use("/chat", require("./routes/chat_rooms"));
+app.use("/board", require("./routes/board"));
+app.use("/comments", require("./routes/comments"));
+app.use("/likes", require("./routes/likes"));
+app.use("/home", require("./routes/home")); // ✅ 수정 완료!
 
-app.use("/home", homeRouter);
-app.use("/auth", authRoutes);
-app.use("/time", timetableRouter);
-app.use("/chat", require('./routes/chat_messages'));
-app.use("/chat", require('./routes/chat_rooms'));
-// app.use("/chat", require('./routes/chat_participants'));
-app.use("/board", boardRoutes);
-app.use("/comments", commentsRoutes);
-app.use("/likes", likesRouter); 
-
+// ✅ 서버 시작
 app.listen(PORT, () => {
-  console.log(`http://localhost:${PORT}`);
+  console.log(`✅ Server running at http://localhost:${PORT}`);
 });
