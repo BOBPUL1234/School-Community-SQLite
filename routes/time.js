@@ -13,8 +13,7 @@ db.run(`CREATE TABLE IF NOT EXISTS timetable (
 
 router.post("/save", (req, res) => {
   const { user_id, cell_key, subject } = req.body;
-  db.run(`INSERT INTO timetable (user_id, cell_key, subject) VALUES (?, ?, ?)
-          ON CONFLICT(user_id, cell_key) DO UPDATE SET subject = ?`,
+  db.run("INSERT INTO timetable (user_id, cell_key, subject) VALUES (?, ?, ?) ON CONFLICT(user_id, cell_key) DO UPDATE SET subject = ?",
     [user_id, cell_key, subject, subject],
     (err) => {
       if (err) return res.status(500).json({ success: false });
@@ -24,7 +23,7 @@ router.post("/save", (req, res) => {
 
 router.get("/:user_id", (req, res) => {
   const user_id = req.params.user_id;
-  db.all(`SELECT cell_key, subject FROM timetable WHERE user_id = ?`, [user_id], (err, rows) => {
+  db.all("SELECT cell_key, subject FROM timetable WHERE user_id = ?", [user_id], (err, rows) => {
     const data = {};
     for (const row of rows) data[row.cell_key] = row.subject;
     res.json(data);

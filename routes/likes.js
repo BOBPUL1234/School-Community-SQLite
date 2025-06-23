@@ -18,18 +18,16 @@ router.post("/", (req, res) => {
 
   db.serialize(() => {
     if (liked) {
-      db.run(`INSERT OR IGNORE INTO likes (user_id, target_type, target_id) VALUES (?, ?, ?)`,
+      db.run("INSERT OR IGNORE INTO likes (user_id, target_type, target_id) VALUES (?, ?, ?)",
         [userId, targetType, targetId]);
     } else {
-      db.run(`DELETE FROM likes WHERE user_id = ? AND target_type = ? AND target_id = ?`,
+      db.run("DELETE FROM likes WHERE user_id = ? AND target_type = ? AND target_id = ?",
         [userId, targetType, targetId]);
     }
-    db.get(`SELECT COUNT(*) as cnt FROM likes WHERE target_type = ? AND target_id = ?`,
-      [targetType, targetId],
-      (err, row) => {
+    db.get("SELECT COUNT(*) as cnt FROM likes WHERE target_type = ? AND target_id = ?",
+      [targetType, targetId], (err, row) => {
         const likeCount = row?.cnt || 0;
-        const updateQuery = `UPDATE posts SET likes = ? WHERE id = ?`;
-        db.run(updateQuery, [likeCount, targetId]);
+        db.run("UPDATE posts SET likes = ? WHERE id = ?", [likeCount, targetId]);
         res.json({ likes: likeCount });
       });
   });
